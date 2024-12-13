@@ -4,11 +4,12 @@ import java.util.*;
 
 public class ChatServer {
 
+    // List to keep track of all connected clients
+
     private static List<ClientHandler> clients = new ArrayList<>();
     public static void main(String args[]) throws IOException{
 
-        // List to keep track of all connected clients
-
+        //create a server socket to wait for clients to connect on the port 3000
         ServerSocket serverSocket = new ServerSocket(2000);
 
         System.out.println("Server started. Waiting for clients...");
@@ -21,6 +22,7 @@ public class ChatServer {
 
             ClientHandler clientThread = new ClientHandler(clientSocket,clients);
             clients.add(clientThread);
+            //Brush up on thread fundamentals, they need an instance of a runnable object for the constructor
             new Thread(clientThread).start();
         }
     }
@@ -35,6 +37,7 @@ class ClientHandler implements Runnable {
     public ClientHandler(Socket socket, List<ClientHandler> clients) throws IOException {
         this.clientSocket = socket;
         this.clients = clients;
+        //creating a new printwriter which outputs what the client socket sent
         this.out = new PrintWriter(clientSocket.getOutputStream(), true);
         this.in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
