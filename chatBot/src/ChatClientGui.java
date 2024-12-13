@@ -27,7 +27,7 @@ public class ChatClientGui extends JFrame{
         add(textField, BorderLayout.SOUTH);
 
         try {
-            this.client = new ChatClient("127.0.0.1", 5000, this::onMessageReceived);
+            this.client = new ChatClient("127.0.0.1", 2000, this::onMessageReceived);
             client.startClient();
         } catch (IOException e){
             e.printStackTrace();
