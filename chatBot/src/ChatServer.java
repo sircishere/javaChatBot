@@ -9,7 +9,7 @@ public class ChatServer {
     private static List<ClientHandler> clients = new ArrayList<>();
     public static void main(String args[]) throws IOException{
 
-        //create a server socket to wait for clients to connect on the port 3000
+        //create a server socket to wait for clients to connect on the port 2000
         ServerSocket serverSocket = new ServerSocket(2000);
 
         System.out.println("Server started. Waiting for clients...");
