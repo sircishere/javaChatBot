@@ -15,8 +15,17 @@ public class ChatClientGui extends JFrame{
         setSize(400,500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        Color backgroundColor = new Color(240,240,240);
+        Color buttonColor = new Color(75,75,75);
+        Color textColor = new Color(50,50,50);
+        Font textFont = new Font("Arial",Font.PLAIN,14);
+        Font buttonFont = new Font("Arial",Font.BOLD,12);
+
         messageArea = new JTextArea();
         messageArea.setEditable(false);
+        messageArea.setBackground(backgroundColor);
+        messageArea.setForeground(textColor);
+        messageArea.setFont(textFont);
         add(new JScrollPane(messageArea), BorderLayout.CENTER);
 
         
@@ -24,6 +33,9 @@ public class ChatClientGui extends JFrame{
         this.setTitle("Chat Application -" + name);
 
         textField = new JTextField();
+        textField.setFont(textFont);
+        textField.setForeground(textColor);
+        textField.setBackground(backgroundColor);
         textField.addActionListener(e -> {
             String message = "[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "]"
             + name + ": " + textField.getText();
@@ -32,6 +44,9 @@ public class ChatClientGui extends JFrame{
         });
 
         JButton exitButton = new JButton("Exit");
+        exitButton.setFont(buttonFont);
+        exitButton.setBackground(buttonColor);
+        exitButton.setForeground(Color.WHITE);
         exitButton.addActionListener(e -> {
             String departureMessage = name + "has left the chat";
             client.sendMessage(departureMessage);
@@ -44,6 +59,7 @@ public class ChatClientGui extends JFrame{
 
             System.exit(0);
         });
+        
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.add(textField,BorderLayout.CENTER);
         bottomPanel.add(exitButton,BorderLayout.EAST);
@@ -61,10 +77,12 @@ public class ChatClientGui extends JFrame{
     }
 
     private void onMessageReceived(String message){
+        //using invoke later to ensure thread safety when updating GUI (research)
         SwingUtilities.invokeLater(() -> messageArea.append(message + "\n"));
     }
 
     public static void main(String args[]){
+        //Ensure the gui is created and updated on the event dispatch thread (huh)
         SwingUtilities.invokeLater(() -> {
             new ChatClientGui().setVisible(true);
         });
